@@ -1,0 +1,215 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Editor de Cartão</title>
+
+<style>
+body {
+    margin: 0;
+    font-family: Arial, sans-serif;
+}
+
+header, footer {
+    background: #1e1e1e;
+    color: white;
+    text-align: center;
+    padding: 15px;
+}
+
+nav {
+    background: #333;
+    text-align: center;
+    padding: 10px;
+}
+
+nav a {
+    color: white;
+    margin: 0 10px;
+    text-decoration: none;
+    font-weight: bold;
+}
+
+nav a:hover {
+    text-decoration: underline;
+}
+
+main {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 20px;
+    padding: 20px;
+}
+
+#formulario {
+    flex: 1;
+    min-width: 250px;
+}
+
+#cartao {
+    flex: 2;
+    min-width: 250px;
+    border: 2px solid #000;
+    border-radius: 15px;
+    padding: 20px;
+    text-align: center;
+    background: #fff;
+    box-shadow: 0 0 10px rgba(0,0,0,0.2);
+}
+
+.quadrado {
+    border: 1px solid red;
+    margin: 10px;
+    padding: 10px;
+}
+
+input, button {
+    width: 100%;
+    margin-top: 5px;
+    margin-bottom: 10px;
+    padding: 8px;
+}
+
+button {
+    background: #333;
+    color: white;
+    border: none;
+    cursor: pointer;
+}
+
+button:hover {
+    background: #555;
+}
+</style>
+</head>
+
+<body>
+
+<header>
+    <h1>Editor de Cartão</h1>
+</header>
+
+<nav>
+    <a href="index.html">Apresentação</a>
+    <a href="editor.html">Trabalho 1</a>
+    <a href="#">Trabalho 2</a>
+    <a href="#">Trabalho 3</a>
+</nav>
+
+<main>
+
+<div id="formulario">
+
+<h3>Editar Cartão</h3>
+
+<label for="texto">Texto</label>
+<input type="text" id="texto">
+
+<button onclick="adicionarTexto()">Adicionar Texto</button>
+
+<label for="indice">Escolher elemento</label>
+<input type="number" id="indice" value="1" min="1">
+
+<button onclick="removerElemento()">Remover Elemento</button>
+
+<label for="fonte">Tamanho da Fonte</label>
+<input type="range" id="fonte" min="10" max="50">
+
+<label for="corFundo">Cor do Cartão</label>
+<input type="color" id="corFundo">
+
+<label for="imagem">Inserir Imagem</label>
+<input type="file" id="imagem" accept="image/*">
+
+<button onclick="removerImagem()">Remover Imagem</button>
+
+</div>
+
+<div id="cartao">
+    <h2>Seu Cartão</h2>
+</div>
+
+</main>
+
+<footer>
+    <p>Editor interativo com JavaScript</p>
+</footer>
+
+<script>
+
+let cartao = document.querySelector("#cartao");
+let imagem = null;
+
+// adicionar texto
+function adicionarTexto() {
+    let texto = document.querySelector("#texto").value.trim();
+    if (texto === "") return;
+
+    let div = document.createElement("div");
+    div.className = "quadrado";
+    div.textContent = texto;
+
+    cartao.appendChild(div);
+}
+
+// remover elemento
+function removerElemento() {
+    let lista = document.querySelectorAll(".quadrado");
+    let i = document.querySelector("#indice").value - 1;
+
+    if (lista[i]) {
+        lista[i].remove();
+    }
+}
+
+// alterar fonte
+document.querySelector("#fonte").addEventListener("input", () => {
+    let lista = document.querySelectorAll(".quadrado");
+    let i = document.querySelector("#indice").value - 1;
+
+    if (lista[i]) {
+        lista[i].style.fontSize =
+            document.querySelector("#fonte").value + "px";
+    }
+});
+
+// cor de fundo
+document.querySelector("#corFundo").addEventListener("input", () => {
+    cartao.style.backgroundColor =
+        document.querySelector("#corFundo").value;
+});
+
+// imagem
+document.querySelector("#imagem").addEventListener("change", (e) => {
+    let file = e.target.files[0];
+
+    if (file) {
+        let reader = new FileReader();
+
+        reader.onload = function(ev) {
+            if (!imagem) {
+                imagem = document.createElement("img");
+                cartao.appendChild(imagem);
+            }
+
+            imagem.src = ev.target.result;
+            imagem.style.width = "50%";
+        }
+
+        reader.readAsDataURL(file);
+    }
+});
+
+// remover imagem
+function removerImagem() {
+    if (imagem) {
+        cartao.removeChild(imagem);
+        imagem = null;
+    }
+}
+
+</script>
+
+</body>
+</html>
