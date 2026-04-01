@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Trabalhos - Interface Web</title>
+<title>Trabalhos</title>
 
 <style>
 body {
@@ -28,27 +28,23 @@ nav a {
     color: white;
     margin: 0 10px;
     text-decoration: none;
-    font-weight: bold;
-}
-
-nav a:hover {
-    text-decoration: underline;
 }
 
 main {
     padding: 20px;
-    max-width: 900px;
+    max-width: 800px;
     margin: auto;
 }
 
 img {
     width: 100%;
-    border-radius: 10px;
-    margin-top: 15px;
+    margin-top: 10px;
 }
 
-footer {
-    margin-top: 20px;
+@media (max-width: 600px) {
+    main {
+        padding: 10px;
+    }
 }
 </style>
 </head>
@@ -56,41 +52,37 @@ footer {
 <body>
 
 <header>
-    <h1>Trabalhos de Interface Web</h1>
+<h1>Trabalhos de Interface Web</h1>
 </header>
 
 <nav>
-    <a href="index.html">Apresentação</a>
-    <a href="editor.html">Trabalho 1</a>
-    <a href="#">Trabalho 2</a>
-    <a href="#">Trabalho 3</a>
+<a href="index.html">Apresentação</a>
+<a href="editor.html">Trabalho 1</a>
+<a href="#">Trabalho 2</a>
+<a href="#">Trabalho 3</a>
 </nav>
 
 <main>
-    <h2>Sobre o Site</h2>
-    <p>
-        Este site foi desenvolvido para apresentar os trabalhos da disciplina de Interface Web.
-        Ao longo do semestre, novos projetos serão adicionados aqui.
-    </p>
 
-    <h3>Objetivo</h3>
-    <p>
-        O objetivo deste site é demonstrar a evolução no desenvolvimento de interfaces web,
-        utilizando HTML, CSS e JavaScript.
-    </p>
+<h2>Sobre o Site</h2>
+<p>Este site apresenta trabalhos da disciplina de Interface Web.</p>
 
-    <h3>Conteúdo</h3>
-    <ul>
-        <li>Projetos interativos</li>
-        <li>Manipulação do DOM com JavaScript</li>
-        <li>Interfaces responsivas</li>
-    </ul>
+<h2>Objetivo</h2>
+<p>Demonstrar o uso de HTML, CSS e JavaScript.</p>
 
-    <img src="img/img1.jpg" alt="tads">
+<h2>Conteúdo</h2>
+<ul>
+<li>Manipulação do DOM</li>
+<li>Eventos</li>
+<li>Interfaces simples</li>
+</ul>
+
+<img src="img/img1.jpg" alt="imagem">
+
 </main>
 
 <footer>
-    <p>Desenvolvido para a disciplina de Interface Web</p>
+<p>Trabalho de JavaScript</p>
 </footer>
 
 </body>
