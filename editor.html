@@ -28,34 +28,24 @@ nav a {
     color: white;
     margin: 0 10px;
     text-decoration: none;
-    font-weight: bold;
-}
-
-nav a:hover {
-    text-decoration: underline;
 }
 
 main {
     display: flex;
-    flex-wrap: wrap;
     gap: 20px;
     padding: 20px;
+    flex-wrap: wrap;
 }
 
 #formulario {
     flex: 1;
-    min-width: 250px;
 }
 
 #cartao {
     flex: 2;
-    min-width: 250px;
-    border: 2px solid #000;
-    border-radius: 15px;
+    border: 2px solid black;
     padding: 20px;
     text-align: center;
-    background: #fff;
-    box-shadow: 0 0 10px rgba(0,0,0,0.2);
 }
 
 .quadrado {
@@ -66,20 +56,28 @@ main {
 
 input, button {
     width: 100%;
-    margin-top: 5px;
-    margin-bottom: 10px;
+    margin: 5px 0;
     padding: 8px;
 }
 
-button {
-    background: #333;
-    color: white;
+input[type="color"] {
+    height: 40px;
     border: none;
     cursor: pointer;
 }
 
-button:hover {
-    background: #555;
+@media (max-width: 600px) {
+    main {
+        flex-direction: column;
+    }
+
+    #formulario, #cartao {
+        width: 100%;
+    }
+
+    input, button {
+        font-size: 16px;
+    }
 }
 </style>
 </head>
@@ -87,127 +85,127 @@ button:hover {
 <body>
 
 <header>
-    <h1>Editor de Cartão</h1>
+<h1>Editor de Cartão</h1>
 </header>
 
 <nav>
-    <a href="index.html">Apresentação</a>
-    <a href="editor.html">Trabalho 1</a>
-    <a href="#">Trabalho 2</a>
-    <a href="#">Trabalho 3</a>
+<a href="index.html">Apresentação</a>
+<a href="editor.html">Trabalho 1</a>
+<a href="#">Trabalho 2</a>
+<a href="#">Trabalho 3</a>
 </nav>
 
 <main>
 
 <div id="formulario">
 
-<h3>Editar Cartão</h3>
+<h2>Editar Cartão</h2>
 
-<label for="texto">Texto</label>
+<label>Texto</label>
 <input type="text" id="texto">
 
-<button onclick="adicionarTexto()">Adicionar Texto</button>
+<button id="btnAdd">Adicionar Texto</button>
 
-<label for="indice">Escolher elemento</label>
-<input type="number" id="indice" value="1" min="1">
+<label>Índice (1 a 10)</label>
+<input type="number" id="indice" value="1" min="1" max="10">
 
-<button onclick="removerElemento()">Remover Elemento</button>
+<button id="btnRemove">Remover Elemento</button>
 
-<label for="fonte">Tamanho da Fonte</label>
+<label>Tamanho da Fonte</label>
 <input type="range" id="fonte" min="10" max="50">
 
-<label for="corFundo">Cor do Cartão</label>
-<input type="color" id="corFundo">
+<label>Cor do Fundo</label>
+<input type="color" id="cor">
 
-<label for="imagem">Inserir Imagem</label>
-<input type="file" id="imagem" accept="image/*">
-
-<button onclick="removerImagem()">Remover Imagem</button>
+<label>Imagem</label>
+<input type="file" id="imagem">
 
 </div>
 
 <div id="cartao">
-    <h2>Seu Cartão</h2>
+<h2>Seu Cartão</h2>
 </div>
 
 </main>
 
 <footer>
-    <p>Editor interativo com JavaScript</p>
+<p>Editor com JavaScript</p>
 </footer>
 
 <script>
 
 let cartao = document.querySelector("#cartao");
+let texto = document.querySelector("#texto");
+let indice = document.querySelector("#indice");
+let fonte = document.querySelector("#fonte");
+let cor = document.querySelector("#cor");
+let imagemInput = document.querySelector("#imagem");
+
 let imagem = null;
 
-// adicionar texto
-function adicionarTexto() {
-    let texto = document.querySelector("#texto").value.trim();
-    if (texto === "") return;
+// ADICIONAR (corrigido)
+document.querySelector("#btnAdd").addEventListener("click", function() {
+    let valor = texto.value.trim();
+    if (valor === "") return;
 
     let div = document.createElement("div");
     div.className = "quadrado";
-    div.textContent = texto;
+    div.textContent = valor;
 
-    cartao.appendChild(div);
-}
-
-// remover elemento
-function removerElemento() {
     let lista = document.querySelectorAll(".quadrado");
-    let i = document.querySelector("#indice").value - 1;
+    let i = parseInt(indice.value) - 1;
+
+    if (i < 0 || i > 9) return;
+
+    if (i >= lista.length) {
+        cartao.appendChild(div);
+    } else {
+        cartao.insertBefore(div, lista[i]);
+    }
+});
+
+// REMOVER
+document.querySelector("#btnRemove").addEventListener("click", function() {
+    let lista = document.querySelectorAll(".quadrado");
+    let i = indice.value - 1;
+
+    if (i < 0 || i > 9) return;
 
     if (lista[i]) {
         lista[i].remove();
     }
-}
+});
 
-// alterar fonte
-document.querySelector("#fonte").addEventListener("input", () => {
+// FONTE
+fonte.addEventListener("input", function() {
     let lista = document.querySelectorAll(".quadrado");
-    let i = document.querySelector("#indice").value - 1;
+    let i = indice.value - 1;
 
     if (lista[i]) {
-        lista[i].style.fontSize =
-            document.querySelector("#fonte").value + "px";
+        lista[i].style.fontSize = fonte.value + "px";
     }
 });
 
-// cor de fundo
-document.querySelector("#corFundo").addEventListener("input", () => {
-    cartao.style.backgroundColor =
-        document.querySelector("#corFundo").value;
+// COR
+cor.addEventListener("input", function() {
+    cartao.style.backgroundColor = cor.value;
 });
 
-// imagem
-document.querySelector("#imagem").addEventListener("change", (e) => {
+// IMAGEM
+imagemInput.addEventListener("change", function(e) {
     let file = e.target.files[0];
+    if (!file) return;
 
-    if (file) {
-        let reader = new FileReader();
+    let url = URL.createObjectURL(file);
 
-        reader.onload = function(ev) {
-            if (!imagem) {
-                imagem = document.createElement("img");
-                cartao.appendChild(imagem);
-            }
-
-            imagem.src = ev.target.result;
-            imagem.style.width = "50%";
-        }
-
-        reader.readAsDataURL(file);
+    if (!imagem) {
+        imagem = document.createElement("img");
+        cartao.appendChild(imagem);
     }
+
+    imagem.src = url;
+    imagem.style.width = "50%";
 });
-
-// remover imagem
-function removerImagem() {
-    if (imagem) {
-        cartao.removeChild(imagem);
-        imagem = null;
-    }
-}
 
 </script>
 
